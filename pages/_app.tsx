@@ -17,7 +17,7 @@ import { Container } from "@mui/system";
 
 export default function MyApp({ Component, pageProps}: any){
     return  (<ThemeProvider>
-       <Container maxWidth="lg">
+       <Container maxWidth="sm">
        <Component {...pageProps} />
        </Container>
 
