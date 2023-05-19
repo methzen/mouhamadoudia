@@ -1,16 +1,16 @@
-import { Container } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import Header from '../components/header'
 import Footer from "@/components/footer";
 
 export default function Home() {
     return (
-      <Container maxWidth="lg">
-                <Header/>
+     <>
+      <Header/>
+      <div className='homepage-container'>
       <p>ceci est un text</p>
+      </div>
       <Footer/>
-      </Container>
-
-
+      </>
     )
   }
   
