@@ -9,25 +9,7 @@ import GoogleAnalytics from "../../components/googleAnalytics"
 import getBlogPostByUrlTitle from "../../api/getBlogPostByUrlTitle"
 import { CardContent } from "@mui/material"
 import { NextPageContext } from "next"
-
-interface Post {
-    id: string
-    title:string
-    urlTitle:string
-    dateTimestamp: number
-    tags: string[]
-    thumbnailImageUrl: string
-    markdownContent: string
-    seoTitleTag: string
-    seoMetaDescription: string
-}
-
-interface PostProps {
-    post : Post
-    getDataError?: boolean
-    notFoundError?: boolean
-}
-
+import { PostProps } from "@/types/types";
 
 Post.getInitialProps = async({ query }: NextPageContext)=>{
     const apiResult= await getBlogPostByUrlTitle(query.title)
