@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeOptions, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
 // components
-import { useSettingsContext } from '../components/settings';
+// import { useSettingsContext } from '../components/settings';
 //
 import palette from './palette';
 import typography from './typography';
@@ -19,7 +19,10 @@ type Props = {
 };
 
 export default function ThemeProvider({ children }: Props) {
-  const { themeMode, themeDirection } = useSettingsContext();
+  // const { themeMode, themeDirection } = useSettingsContext();
+  const themeMode = 'light'
+  const themeDirection = 'rtl'
+  // themeDirection = 'rtl' | 'ltr'
 
   const themeOptions: ThemeOptions = useMemo(
     () => ({
