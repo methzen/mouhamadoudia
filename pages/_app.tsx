@@ -1,4 +1,6 @@
-// import { ThemeSettings } from "@/components/settings";
+import "../styles/components/header.css"
+import "../styles/components/footer.css"
+
 import ThemeProvider from "@/theme";
 import React from "react";
 

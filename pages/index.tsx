@@ -1,11 +1,16 @@
-import { Button } from "@mui/material";
+import { Container } from '@mui/system';
+import Header from '../components/header'
+import Footer from "@/components/footer";
 
 export default function Home() {
     return (
-      <div>
-      <Button variant="contained">Hello World</Button>
+      <Container maxWidth="lg">
+                <Header/>
       <p>ceci est un text</p>
-    </div>
+      <Footer/>
+      </Container>
+
+
     )
   }
   
