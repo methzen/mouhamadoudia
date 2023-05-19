@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import apiBaseUrl from "../../utils/apiBaseUrl.js"
+import apiBaseUrl from "../../utils/apiBaseUrl"
 
 export default function(filename, callback) {
   axios.put(`${apiBaseUrl}/images/delete-image`, {
