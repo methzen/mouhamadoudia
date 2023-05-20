@@ -4,11 +4,13 @@ import Header from "../components/header"
 import Footer from "../components/footer"
 import HeadMetadata from "../components/headMetadata"
 import GoogleAnalytics from "../components/googleAnalytics"
+import { Container } from "@mui/material"
 
 export default class extends Component {
   render () {
     return (
-      <div className="layout-wrapper">
+      <Container maxWidth="md">
+     <div className="layout-wrapper">
           <HeadMetadata
           title="Mouhamadou"
           metaDescription="Sofware Engineer"
@@ -39,6 +41,8 @@ export default class extends Component {
         </div>
         <Footer />
       </div>
+      </Container>
+ 
     )
   }
 }

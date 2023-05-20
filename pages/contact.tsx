@@ -4,9 +4,11 @@ import Header from "../components/header"
 import Footer from "../components/footer"
 import HeadMetadata from "../components/headMetadata"
 import GoogleAnalytics from "../components/googleAnalytics"
+import { Container } from "@mui/material"
 
 export default function Contact() {
     return (
+      <Container maxWidth="md">
       <div className="layout-wrapper">
         <HeadMetadata
           title="Contact | Mouhamadou"
@@ -22,6 +24,8 @@ export default function Contact() {
         </div>
         <Footer />
       </div>
+      </Container>
+
     )
 
 }

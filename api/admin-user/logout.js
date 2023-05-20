@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import apiBaseUrl from "../../utils/apiBaseUrl.js"
+import apiBaseUrl from "../../utils/apiBaseUrl"
 
 export default function(callback) {
   axios.put(`${apiBaseUrl}/users/logout`, {}, {withCredentials: true})
