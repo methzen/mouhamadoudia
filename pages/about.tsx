@@ -21,7 +21,7 @@ export default class extends Component {
           <div className="about-section">
             <h1>About Me</h1>
             <p>Mouhamadou Dia, engineer and PhD in applied mathematics.</p>
-            <p>Since 2015, I have been helping technological companies implement numerical methods 
+            <p>Since 2015, I have been helping tech companies implement numerical methods 
               and strategies that help them make better decisions and solve complexe and challenging industrial problems.</p>
             <p>I have worked with companies like General Electric, Alstom, EDF, Edvance...</p>
             <p>I started this website as a place to document everything I learned.</p>

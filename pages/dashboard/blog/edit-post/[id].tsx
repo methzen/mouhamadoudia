@@ -1,4 +1,5 @@
 import React, { ChangeEvent, Component, useState } from "react"
+import UnprivilegedEditor from "react-quill"
 import Head from "next/head"
 import moment from "moment"
 import { NextPageContext } from "next"
@@ -145,10 +146,6 @@ export default function editPost (props : PostProps) {
       setSubmitError(true)
       setErrorMsg("Tag field is required.")
 
-    } else if (!input.imageUrlInputValue) {
-      setSubmitError(true)
-      setErrorMsg("Image URL field is required.")
-
     } else if (!input.markdownInputValue) {
 
       setSubmitError(true)
@@ -167,7 +164,7 @@ export default function editPost (props : PostProps) {
       setSubmitSuccess(false)
       setSubmitLoading(true)
       setErrorMsg('')
-  
+
       editBlogPost(
         props.post.id,
         input.titleInputValue,
@@ -314,24 +311,18 @@ export default function editPost (props : PostProps) {
                   </div>
                 </div>
                 <div className="edit-blog-post-form-section">
-                  <div className="edit-blog-post-form-section-label">
-                    <span>Markdown Content</span>
-                  </div>
-                  <div >
           <Grid item xs={12} md={8}>
             <Card>
-              <CardHeader title="Edit th blog post" />
+              <CardHeader title="Markdown Content" />
               <CardContent>
                 <Editor
                   id="full-editor"
                   value={input.markdownInputValue}
-                  onChange={(value) => console.log(value)}
+                  onChange={updateMarkdownInputValue}
                 />
               </CardContent>
             </Card>
           </Grid>
-
-                  </div>
                 </div>
                 <div className="edit-blog-post-seo-section-title">
                   <span>SEO</span>

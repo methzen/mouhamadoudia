@@ -16,6 +16,7 @@ import "../styles/pages/login.css"
 
 //dashboard
 import "../styles/dashboard/layout.css"
+import "../styles/dashboard/quill.css"
 import "../styles/dashboard/components/header.css"
 import "../styles/dashboard/components/sidebar.css"
 import "../styles/dashboard/blog/index.css"
