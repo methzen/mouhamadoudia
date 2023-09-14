@@ -1,74 +1,79 @@
-import { Component } from "react"
+import { useState } from "react"
 import Head from "next/head"
 
-import Header from "../../../components/header"
-import Sidebar from "../../../components/sidebar"
-import DeleteImageModal from "../../../components/modals/deleteImage"
+import Header from "../../../../components/dashboard/header"
+import Sidebar from "../../../../components/dashboard/sidebar"
+import DeleteImageModal from "../../../../components/dashboard/modals/deleteImage"
+import { NextPageContext } from "next"
+import getImageByFilename from "../../../../api/images/getImageByFilename"
+import updateImageFilename from "../../../../api/images/updateImageFilename"
+import checkIfImageFilenameExists from "../../../../api/images/checkIfImageFilenameExists"
+import deleteImage from "../../../../api/images/deleteImage"
 
-import getImageByFilename from "../../../api/images/getImageByFilename"
-import updateImageFilename from "../../../api/images/updateImageFilename"
-import checkIfImageFilenameExists from "../../../api/images/checkIfImageFilenameExists"
-import deleteImage from "../../../api/images/deleteImage"
+Filename.getInitialProps = async ({req, res, query}: NextPageContext) =>{
+  const apiResult = await getImageByFilename(query.filename, req)
 
-export default class extends Component {
-  static async getInitialProps ({req, res, query}) {
-    const apiResult = await getImageByFilename(query.filename, req)
-
-    if (!apiResult.authSuccess) {
-      res.writeHead(302, { Location: "/login" })
-      res.end()
-    }
-
-    return {
-      notFoundError: apiResult && apiResult.notFoundError,
-      fileSize: apiResult && apiResult.fileSize,
-      fileCreated: apiResult && apiResult.fileCreated,
-      filename: apiResult && apiResult.filename
-    }
+  if (!apiResult.authSuccess) {
+    res?.writeHead(302, { Location: "/login" })
+    res?.end()
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
+  return {
+    notFoundError: apiResult && apiResult.notFoundError,
+    fileSize: apiResult && apiResult.fileSize,
+    fileCreated: apiResult && apiResult.fileCreated,
+    filename: apiResult && apiResult.filename
+  }
+}
+
+export default function Filename({notFoundError, fileSize, fileCreated, filename}:any) {
       //update filename
-      filenameInputValue: this.props.filename,
-      updateLoading: false,
-      updateSubmitError: false,
-      filenameAlreadyExistsError: false,
-      updateSuccess: false,
-      //delete image
-      showDeleteImageModal: false,
-      deleteLoading: false,
-      deleteError: false
-    }
+      const [filenameInputValue, setFilenameInputValue] = useState(filename)
+      const [updateLoading, setUpdateLoading] = useState(false)
+      const [updateSubmitError, setUpdateSubmitError] = useState(false)
+      const [filenameAlreadyExistsError, setFilenameAlreadyExistsError] = useState(false)
+      const [updateSuccess, setUpdateSuccess] = useState(false)
+       //delete image
+      const [showDeleteImageModal,setShowDeleteImageModal] = useState(false)
+      const [deleteLoading,setDeleteLoading] = useState(false)
+      const [deleteError,setDeleteError] = useState(false)
+
+
+  const updateFilenameInputValue = (event:any) => {
+    setFilenameInputValue(event.target.value)
   }
 
-  updateFilenameInputValue = (event) => {
-    this.setState({filenameInputValue: event.target.value})
-  }
-
-  submitUpdateRequest = () => {
-    if (!this.state.filenameInputValue) {
-      this.setState({updateSubmitError: true, updateSuccess: false})
+  const submitUpdateRequest = () => {
+    if (!filenameInputValue) {
+      setUpdateSubmitError(true)
+      setUpdateSuccess(false)
     } else {
-      this.setState({updateLoading: true, updateSuccess: false})
+      setUpdateLoading(true)
+      setUpdateSuccess(false)
   
-      const self = this
-  
-      checkIfImageFilenameExists(this.state.filenameInputValue, function(existsResponse) {
+      checkIfImageFilenameExists(filenameInputValue, function(existsResponse:any) {
         if (!existsResponse.success) {
-          self.setState({updateSubmitError: false, filenameAlreadyExistsError: true, updateSuccess: false, updateLoading: false})
+          setUpdateSubmitError(false)
+          setFilenameAlreadyExistsError(true)
+          setUpdateSuccess(false)
+          setUpdateLoading(false)
         } else {
-          updateImageFilename(self.props.filename, self.state.filenameInputValue, function(response) {
+          updateImageFilename(filename, filenameInputValue, function(response:any) {
             if (response.submitError) {
-              self.setState({updateSubmitError: true, filenameAlreadyExistsError: false, updateSuccess: false, updateLoading: false})
+              setUpdateSubmitError(true)
+              setFilenameAlreadyExistsError(false)
+              setUpdateSuccess(false)
+              setUpdateLoading(false)
             } else if (!response.authSuccess) {
               window.location.href = "/login"
             } else if (!response.success) {
-              self.setState({updateSubmitError: true, filenameAlreadyExistsError: false, updateSuccess: false, updateLoading: false})
+              setUpdateSubmitError(true)
+              setFilenameAlreadyExistsError(false)
+              setUpdateSuccess(false)
+              setUpdateLoading(false)
             } else {
-              self.setState({updateLoading: false})
-              window.location.href = `/images/edit/${self.state.filenameInputValue}`
+              setUpdateLoading(false)
+              window.location.href = `/images/edit/${filenameInputValue}`
             }
           })
         }
@@ -76,40 +81,42 @@ export default class extends Component {
     }
   }
 
-  hideDeleteImageModal = () => {
-    this.setState({showDeleteImageModal: false, deleteLoading: false, deleteError: false})
+  const hideDeleteImageModal = () => {
+    setShowDeleteImageModal(false)
+    setDeleteLoading(false)
+    setDeleteError(false)
   }
 
-  showDeleteImageModal = () => {
-    this.setState({showDeleteImageModal: true})
+  const showDeleteImageModale = () => {
+    setShowDeleteImageModal(true)
   }
 
-  deleteImageRequest = () => {
-    this.setState({deleteLoading: true, deleteError: false})
+  const deleteImageRequest = () => {
+    setDeleteLoading(true)
+    setDeleteError(false)
   
-    const self = this
-  
-    deleteImage(this.props.filename, function(response) {
+    deleteImage(filename, function(response:any) {
       if (response.submitError) {
-        self.setState({deleteLoading: false, deleteError: true})
+        setDeleteLoading(false)
+        setDeleteError(true)
       } else if (!response.authSuccess) {
         window.location.href = "/login"
       } else if (!response.success) {
-        self.setState({deleteLoading: false, deleteError: true})
+        setDeleteLoading(false)
+        setDeleteError(true)
       } else {
         window.location.href = "/images"
       }
     })
   }
 
-  render () {
     return (
       <div className="layout-wrapper">
         <Header />
         <Sidebar page="images" />
         <div className="layout-content-container">
           {
-            !this.props.notFoundError ?
+            !notFoundError ?
             <div className="images-edit-content">
               <div className="images-edit-header">
                 <span>Image Details</span>
@@ -124,7 +131,7 @@ export default class extends Component {
                       <span>Filename:</span>
                     </div>
                     <div className="images-edit-metadata-item-data">
-                      <span>{this.props.filename}</span>
+                      <span>{filename}</span>
                     </div>
                   </div>
                   <div className="images-edit-metadata-item">
@@ -132,7 +139,7 @@ export default class extends Component {
                       <span>File size:</span>
                     </div>
                     <div className="images-edit-metadata-item-data">
-                      <span>{this.props.fileSize}</span>
+                      <span>{fileSize}</span>
                     </div>
                   </div>
                   <div className="images-edit-metadata-item">
@@ -140,7 +147,7 @@ export default class extends Component {
                       <span>Created:</span>
                     </div>
                     <div className="images-edit-metadata-item-data">
-                      <span>{this.props.fileCreated}</span>
+                      <span>{fileCreated}</span>
                     </div>
                   </div>
                 </div>
@@ -156,16 +163,16 @@ export default class extends Component {
                   <div className="images-edit-form-section-input">
                     <input
                       type="text"
-                      value={this.state.filenameInputValue}
-                      onChange={this.updateFilenameInputValue}
+                      value={filenameInputValue}
+                      onChange={updateFilenameInputValue}
                     />
                   </div>
                 </div>
                 <div className="images-edit-page-submit-btn-section">
                   <div className="images-edit-form-btn-container">
                     {
-                      !this.state.updateLoading ?
-                      <div onClick={this.submitUpdateRequest} className="images-edit-form-btn">
+                      !updateLoading ?
+                      <div onClick={submitUpdateRequest} className="images-edit-form-btn">
                         <span>Update</span>
                       </div> :
                       <div className="images-edit-form-btn loading">
@@ -174,19 +181,19 @@ export default class extends Component {
                     }
                   </div>
                   {
-                    this.state.updateSubmitError ?
+                    updateSubmitError ?
                     <div className="images-edit-submit-error-msg">
                       <span>An error occurred.</span>
                     </div> : null
                   }
                   {
-                    this.state.filenameAlreadyExistsError ?
+                    filenameAlreadyExistsError ?
                     <div className="images-edit-submit-error-msg">
                       <span>Filename already exists!</span>
                     </div> : null
                   }
                   {
-                    this.state.updateSuccess ?
+                    updateSuccess ?
                     <div className="images-edit-submit-success-msg">
                       <span>Success!</span>
                     </div> : null
@@ -201,7 +208,7 @@ export default class extends Component {
                   <span>This will remove the image from the server. Before deleting, ensure this image is not being used anywhere.</span>
                 </div>
                 <div className="images-edit-delete-btn-container">
-                  <div onClick={this.showDeleteImageModal} className="images-edit-delete-btn">
+                  <div onClick={showDeleteImageModale} className="images-edit-delete-btn">
                     <span>Delete</span>
                   </div>
                 </div>
@@ -213,13 +220,12 @@ export default class extends Component {
           }
         </div>
         <DeleteImageModal
-          error={this.state.deleteError}
-          loading={this.state.deleteLoading}
-          show={this.state.showDeleteImageModal}
-          hideRequest={this.hideDeleteImageModal}
-          deleteRequest={this.deleteImageRequest}
+          error={deleteError}
+          loading={deleteLoading}
+          show={showDeleteImageModal}
+          hideRequest={hideDeleteImageModal}
+          deleteRequest={deleteImageRequest}
         />
       </div>
     )
-  }
 }

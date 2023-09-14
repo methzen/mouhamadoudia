@@ -11,8 +11,8 @@ export default class extends Component {
     const apiResult = await getAllImages(req)
 
     if (!apiResult.authSuccess) {
-      res.writeHead(302, { Location: "/login" })
-      res.end()
+      res?.writeHead(302, { Location: "/login" })
+      res?.end()
     }
 
     return {

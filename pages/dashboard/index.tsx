@@ -1,51 +1,40 @@
-import { Component } from "react"
+import { useState } from "react"
 import Head from "next/head"
 import moment from "moment"
 
 import Header from "../../components/dashboard/header"
 import Sidebar from "../../components/dashboard/sidebar"
-
+import { NextPageContext } from "next"
 import getAllPosts from "../../api/blog-posts/getAllPosts"
 
-export default class extends Component {
-  static async getInitialProps ({req, res}) {
-    const apiResult = await getAllPosts(req)
+Dashboard.getInitialProps=async ({req, res}: NextPageContext)=> {
+  const apiResult = await getAllPosts(req)
 
-    if (!apiResult.authSuccess) {
-      res.writeHead(302, { Location: "/login" })
-      res.end()
-    }
-
-    return {
-      activePosts: apiResult.activePosts ? apiResult.activePosts : [],
-      upcomingPosts: apiResult.upcomingPosts ? apiResult.upcomingPosts : [],
-      getDataError: apiResult && apiResult.getDataError
-    }
+  if (!apiResult.authSuccess) {
+    res?.writeHead(302, { Location: "/login" })
+    res?.end()
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      showActivePosts: true,
-      showUpcomingPosts: false
-    }
+  return {
+    activePosts: apiResult.activePosts ? apiResult.activePosts : [],
+    upcomingPosts: apiResult.upcomingPosts ? apiResult.upcomingPosts : [],
+    getDataError: apiResult && apiResult.getDataError
+  }
+}
+export default function Dashboard({activePosts, upcomingPosts, getDataError}:any){
+
+  const [showActivePosts, SetShowActivePosts] = useState(true)
+  const [showUpcomingPosts, SetShowUpcomingPosts] = useState(false)
+
+  const handleActiveBtnClick = () => {
+      SetShowActivePosts(true)
+      SetShowUpcomingPosts(false)
   }
 
-  handleActiveBtnClick = () => {
-    this.setState({
-      showActivePosts: true,
-      showUpcomingPosts: false
-    })
+  const handleUpcomingBtnClick = () => {
+    SetShowActivePosts(false)
+    SetShowUpcomingPosts(true)
   }
-
-  handleUpcomingBtnClick = () => {
-    this.setState({
-      showActivePosts: false,
-      showUpcomingPosts: true
-    })
-  }
-
-  render () {
     return (
       <div className="db-layout-wrapper">
         <Head>
@@ -69,21 +58,21 @@ export default class extends Component {
             </div>
             <div className="blog-posts-list-container">
               {
-                !this.props.getDataError ?
+                !getDataError ?
                 <>
                   <div className="blog-posts-list-tab-btns">
                     <div className="blog-posts-list-tab-btn-container">
                       <div
-                        className={this.state.showActivePosts ? "blog-posts-list-tab-btn active" : "blog-posts-list-tab-btn"}
-                        onClick={() => this.handleActiveBtnClick()}
+                        className={showActivePosts ? "blog-posts-list-tab-btn active" : "blog-posts-list-tab-btn"}
+                        onClick={() => handleActiveBtnClick()}
                       >
                         <span>Active</span>
                       </div>
                     </div>
                     <div className="blog-posts-list-tab-btn-container">
                       <div
-                        className={this.state.showUpcomingPosts ? "blog-posts-list-tab-btn active" : "blog-posts-list-tab-btn"}
-                        onClick={() => this.handleUpcomingBtnClick()}
+                        className={showUpcomingPosts ? "blog-posts-list-tab-btn active" : "blog-posts-list-tab-btn"}
+                        onClick={() => handleUpcomingBtnClick()}
                       >
                         <span>Upcoming</span>
                       </div>
@@ -102,8 +91,8 @@ export default class extends Component {
                       </div>
                     </div>
                     {
-                      this.state.showActivePosts && this.props.activePosts.length ?
-                      this.props.activePosts.map((post, index) => {
+                      showActivePosts && activePosts.length ?
+                      activePosts.map((post:any, index:number) => {
                         return (
                           <div key={index} className="blog-posts-list-items-table-item">
                             <div className="blog-posts-list-items-table-item-data title">
@@ -123,8 +112,8 @@ export default class extends Component {
                       }) : null
                     }
                     {
-                      this.state.showUpcomingPosts && this.props.upcomingPosts.length ?
-                      this.props.upcomingPosts.map((post, index) => {
+                      showUpcomingPosts && upcomingPosts.length ?
+                      upcomingPosts.map((post:any, index:number) => {
                         return (
                           <div key={index} className="blog-posts-list-items-table-item">
                             <div className="blog-posts-list-items-table-item-data title">
@@ -154,5 +143,4 @@ export default class extends Component {
         </div>
       </div>
     )
-  }
 }

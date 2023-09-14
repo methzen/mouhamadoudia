@@ -22,7 +22,7 @@ export default function Home(props: PostbyTag) {
       <div className="layout-wrapper">
         <HeadMetadata
           title="Mouhamadou Dia"
-          metaDescription="I'm an engineer, software developer and data scientist"
+          metaDescription="I'm an engineer, software developer."
         />
         <GoogleAnalytics />
         <Header />

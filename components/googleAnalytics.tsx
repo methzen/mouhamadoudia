@@ -1,8 +1,6 @@
-import { Component } from "react"
 import Head from "next/head"
 
-export default class extends Component {
-  render() {
+export default function GoogleAnalytics() {
     return (
       <>
         {
@@ -23,5 +21,4 @@ export default class extends Component {
         }
       </>
     )
-  }
 }

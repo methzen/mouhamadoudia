@@ -1,18 +1,16 @@
-import { Component } from "react"
+import Link from 'next/link'
 
-export default class extends Component {
-    render () {
+export default function Footer(){
         return (
            <footer className="footer-wrapper">
                 <div className="footer-links">
-                    <a href="/blog">Blog</a>
-                    <a href="/about">About</a>
-                    <a href="/contact">Contact</a>
+                    <Link href="/blog">Blog</Link>
+                    <Link href="/about">About</Link>
+                    <Link href="/contact">Contact</Link>
                 </div>
                 <div className="footer-bottom-msg">
                     <p>Handcrafted by Mouhamadou</p>
                 </div>
           </footer>  
         )
-    }
 }

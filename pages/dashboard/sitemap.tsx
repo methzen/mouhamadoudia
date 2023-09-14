@@ -1,99 +1,110 @@
-import { Component } from "react"
+import { useState } from "react"
 import Head from "next/head"
 
 import Header from "../../components/dashboard/header"
 import Sidebar from "../../components/dashboard/sidebar"
-
+import { NextPageContext } from "next"
 import authUser from "../../api/admin-user/auth"
 import updateSitemap from "../../api/sitemap/updateSitemap"
 import restartPm2Process from "../../api/sitemap/restartPm2Process"
 import pingSearchEngines from "../../api/sitemap/pingSearchEngines"
 
-export default class extends Component {
-  static async getInitialProps ({req, res}) {
-    const authResult = await authUser(req)
+Sitemap.getInitialProps = async ({req, res}: NextPageContext) =>{
+  const authResult = await authUser(req)
 
-    if (!authResult.success) {
-      res.writeHead(302, { Location: "/login" })
-      res.end()
-    }
-
-    return {}
+  if (!authResult.success) {
+    res?.writeHead(302, { Location: "/login" })
+    res?.end()
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
+  return {}
+}
+export default function Sitemap(props:any) {
       //update sitemap
-      updateSitemapLoading: false,
-      updateSitemapError: false,
-      updateSitemapSuccess: false,
+      const [updateSitemapLoading, setUpdateSitemapLoading]=useState(false)
+      const [updateSitemapError, setUpdateSitemapError]=useState(false)
+      const [updateSitemapSuccess, setUpdateSitemapSuccess]=useState(false)
       //restart pm2
-      restartPm2Loading: false,
-      restartPm2Error: false,
-      restartPm2Success: false,
+      const [restartPm2Loading,setRestartPm2Loading]=useState(false)
+      const [restartPm2Error,setRestartPm2Error]=useState(false)
+      const [restartPm2Success,setRestartPm2Success]=useState(false)
       //send ping to search engines
-      pingLoading: false,
-      pingError: false,
-      pingSuccess: false
-    }
-  }
+      const [pingLoading,setPingLoading]=useState(false)
+      const [pingError,setPingError]=useState(false)
+      const [pingSuccess,setPingSuccess]=useState(false)
 
-  updateSitemapRequest = () => {
-    this.setState({updateSitemapLoading: true, updateSitemapError: false, updateSitemapSuccess: false})
-  
-    const self = this
-  
-    updateSitemap(function(apiResponse) {
+  const updateSitemapRequest = () => {
+    setUpdateSitemapLoading(true)
+    setUpdateSitemapError(true)
+    setUpdateSitemapSuccess(true)
+
+    updateSitemap(function(apiResponse:any) {
       if (apiResponse.submitError) {
-        self.setState({updateSitemapLoading: false, updateSitemapError: true, updateSitemapSuccess: false})
+        setUpdateSitemapLoading(false)
+        setUpdateSitemapError(true)
+        setUpdateSitemapSuccess(false)
       } else if (!apiResponse.authSuccess) {
         window.location.href = "/login"
       } else if (!apiResponse.success) {
-        self.setState({updateSitemapLoading: false, updateSitemapError: true, updateSitemapSuccess: false})
+        setUpdateSitemapLoading(false)
+        setUpdateSitemapError(true)
+        setUpdateSitemapSuccess(false)
       } else {
-        self.setState({updateSitemapLoading: false, updateSitemapError: false, updateSitemapSuccess: true})
+        setUpdateSitemapLoading(false)
+        setUpdateSitemapError(false)
+        setUpdateSitemapSuccess(true)
       }
     })
   }
 
-  restartPm2Request = () => {
-    this.setState({restartPm2Loading: true, restartPm2Error: false, restartPm2Success: false})
+  const restartPm2Request = () => {
+    setRestartPm2Loading(true)
+    setRestartPm2Error(false)
+    setRestartPm2Success(false)
   
-    const self = this
-  
-    restartPm2Process(function(apiResponse) {
+    restartPm2Process(function(apiResponse:any) {
       if (apiResponse.submitError) {
-        self.setState({restartPm2Loading: false, restartPm2Error: true, restartPm2Success: false})
+        setRestartPm2Loading(false)
+        setRestartPm2Error(true)
+        setRestartPm2Success(false)
       } else if (!apiResponse.authSuccess) {
         window.location.href = "/login"
       } else if (!apiResponse.success) {
-        self.setState({restartPm2Loading: false, restartPm2Error: true, restartPm2Success: false})
+        setRestartPm2Loading(false)
+        setRestartPm2Error(true)
+        setRestartPm2Success(false)
       } else {
-        self.setState({restartPm2Loading: false, restartPm2Error: false, restartPm2Success: true})
+        setRestartPm2Loading(false)
+        setRestartPm2Error(false)
+        setRestartPm2Success(true)
       }
     })
   }
 
-  pingSearchEnginesRequest = () => {
-    this.setState({pingLoading: true, pingError: false, pingSuccess: false})
+  const pingSearchEnginesRequest = () => {  
+    setPingLoading(true)
+    setPingError(false)
+    setPingSuccess(false)
   
-    const self = this
-  
-    pingSearchEngines(function(apiResponse) {
+    pingSearchEngines(function(apiResponse:any) {
       if (apiResponse.submitError) {
-        self.setState({pingLoading: false, pingError: true, pingSuccess: false})
+        setPingLoading(false)
+        setPingError(true)
+        setPingSuccess(false)
       } else if (!apiResponse.authSuccess) {
         window.location.href = "/login"
       } else if (!apiResponse.success) {
-        self.setState({pingLoading: false, pingError: true, pingSuccess: false})
+        setPingLoading(false)
+        setPingError(true)
+        setPingSuccess(false)
       } else {
-        self.setState({pingLoading: false, pingError: false, pingSuccess: true})
+        setPingLoading(false)
+        setPingError(false)
+        setPingSuccess(true)
       }
     })
   }
 
-  render () {
     return (
       <div className="db-layout-wrapper">
         <Head>
@@ -116,8 +127,8 @@ export default class extends Component {
                 </div>
                 <div className="sitemap-form-btn-container">
                   {
-                    !this.state.updateSitemapLoading ?
-                    <div onClick={this.updateSitemapRequest} className="sitemap-form-btn">
+                    !updateSitemapLoading ?
+                    <div onClick={updateSitemapRequest} className="sitemap-form-btn">
                       <span>Update Sitemap</span>
                     </div> :
                     <div className="sitemap-form-btn loading">
@@ -126,13 +137,13 @@ export default class extends Component {
                   }
                 </div>
                 {
-                  this.state.updateSitemapSuccess ?
+                  updateSitemapSuccess ?
                   <div className="sitemap-success-msg">
                     <span>Success!</span>
                   </div> : null
                 }
                 {
-                  this.state.updateSitemapError ?
+                  updateSitemapError ?
                   <div className="sitemap-error-msg">
                     <span>An error occurred.</span>
                   </div> : null
@@ -147,8 +158,8 @@ export default class extends Component {
                 </div>
                 <div className="sitemap-form-btn-container">
                   {
-                    !this.state.restartPm2Loading ?
-                    <div onClick={this.restartPm2Request} className="sitemap-form-btn">
+                    !restartPm2Loading ?
+                    <div onClick={restartPm2Request} className="sitemap-form-btn">
                       <span>Restart PM2</span>
                     </div> :
                     <div className="sitemap-form-btn loading">
@@ -157,13 +168,13 @@ export default class extends Component {
                   }
                 </div>
                 {
-                  this.state.restartPm2Success ?
+                  restartPm2Success ?
                   <div className="sitemap-success-msg">
                     <span>Success!</span>
                   </div> : null
                 }
                 {
-                  this.state.restartPm2Error ?
+                  restartPm2Error ?
                   <div className="sitemap-error-msg">
                     <span>An error occurred.</span>
                   </div> : null
@@ -178,8 +189,8 @@ export default class extends Component {
                 </div>
                 <div className="sitemap-form-btn-container">
                   {
-                    !this.state.pingLoading ?
-                    <div onClick={this.pingSearchEnginesRequest} className="sitemap-form-btn">
+                    !pingLoading ?
+                    <div onClick={pingSearchEnginesRequest} className="sitemap-form-btn">
                       <span>Send Ping</span>
                     </div> :
                     <div className="sitemap-form-btn loading">
@@ -188,13 +199,13 @@ export default class extends Component {
                   }
                 </div>
                 {
-                  this.state.pingSuccess ?
+                  pingSuccess ?
                   <div className="sitemap-success-msg">
                     <span>Success!</span>
                   </div> : null
                 }
                 {
-                  this.state.pingError ?
+                  pingError ?
                   <div className="sitemap-error-msg">
                     <span>An error occurred.</span>
                   </div> : null
@@ -205,5 +216,4 @@ export default class extends Component {
         </div>
       </div>
     )
-  }
 }

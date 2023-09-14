@@ -141,7 +141,7 @@ export default function DemoMarkdownPage() {
             <CardHeader title="Html content" sx={{ pb: 3 }} />
             <Divider sx={{ borderStyle: 'dashed' }} />
             <CardContent>
-              <Markdown children={htmlContent} />
+            <Markdown>htmlContent</Markdown>
             </CardContent>
           </Card>
 

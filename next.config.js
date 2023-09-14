@@ -4,12 +4,12 @@ const nextConfig = {
     trailingSlash: true,
     env: {
       // HOST
-      HOST_API_KEY: 'https://api-dev-minimal-v4.vercel.app',
+      "HOST_API_KEY": "http://159.203.125.20:9000",
       "DEV_API_URL" : "http://localhost:9000",
-      "PRODUCTION_API_URL": "https://www.api.mouhamadoudia.me",
-      "GOOGLE_VERIFICATION_ID": "-i0ge6GT1_bmt498IqJC9wkY89wKXcyRbykxPVwnCP8",
-      "BING_VERIFICATION_ID": "320EE17964C6F08B23981F78063CB919",
-      "GOOGLE_ANALYTICS_ID" : "G-7VL7TDTGT5"
+      "PRODUCTION_API_URL": "http://159.203.125.20:9000",
+      "GOOGLE_VERIFICATION_ID": "-",
+      "BING_VERIFICATION_ID": "",
+      "GOOGLE_ANALYTICS_ID" : ""
     },
 }
 

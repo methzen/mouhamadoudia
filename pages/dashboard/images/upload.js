@@ -14,8 +14,8 @@ export default class extends Component {
     const authResult = await authUser(req)
 
     if (!authResult.success) {
-      res.writeHead(302, {Location: "/login"})
-      res.end()
+      res?.writeHead(302, {Location: "/login"})
+      res?.end()
     }
 
     return {}

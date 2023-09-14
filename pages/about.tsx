@@ -6,8 +6,7 @@ import HeadMetadata from "../components/headMetadata"
 import GoogleAnalytics from "../components/googleAnalytics"
 import { Container } from "@mui/material"
 
-export default class extends Component {
-  render () {
+export default function about () {
     return (
       <Container maxWidth="md">
      <div className="layout-wrapper">
@@ -44,5 +43,4 @@ export default class extends Component {
       </Container>
  
     )
-  }
 }

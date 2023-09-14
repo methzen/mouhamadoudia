@@ -1,25 +1,23 @@
-import { Component } from "react"
+import Link from 'next/link'
 
-export default class extends Component{
-    render (){
+function Header(){
         return (
             <header className="header-wrapper">
                 <div className="header-container">
                     <div className="header-logo">
-                        <a href="/">
+                        <Link href="/">
                             <span className="header-logo-icon">💾</span>
                             <span className="header-logo-text">Mouhamadou DIA</span>
-                        </a>
+                        </Link>
                     </div>
                     <div className="header-links">
-                        <a href="/blog">Blog</a>
-                        <a href="/about">About</a>
-                        <a href="/contact">Contact</a>
-                        <a href="/login">Login</a>
+                        <Link href="/blog">Blog</Link>
+                        <Link href="/about">About</Link>
+                        <Link href="/contact">Contact</Link>
+                        <Link href="/login">Login</Link>
                     </div>
                 </div>
             </header>
         )
-
-    }
 }
+export default Header;

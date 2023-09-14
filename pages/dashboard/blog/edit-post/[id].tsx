@@ -33,7 +33,7 @@ editPost.getInitialProps = async ({req, res, query}: NextPageContext ) =>{
     notFoundError: apiResult && apiResult.notFoundError
   }
 }
-export default function editPost (props : PostProps) {
+export default function editPost (props : PostProps):JSX.Element{
   const {
     title,
     urlTitle,
@@ -404,3 +404,5 @@ export default function editPost (props : PostProps) {
       </div>
     )
 }
+
+// export default editPost;
