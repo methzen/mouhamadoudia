@@ -1,5 +1,5 @@
 import moment from "moment"
-
+import Head from 'next/head';
 import Markdown from '../../components/markdown';
 import Header from "../../components/header"
 import Footer from "../../components/footer"
@@ -73,3 +73,33 @@ export default function Post (props: PostProps){
             </div>
         )
 }
+
+// export default function Post(props: PostProps) {
+//   const content = props.post.markdownContent
+//   return (
+//     <>
+//       <Head>
+//         <title> Extra Components: Markdown | Minimal UI</title>
+//       </Head>
+//       <Box
+//         sx={{
+//           pt: 6,
+//           pb: 1,
+//           bgcolor: (theme) => (theme.palette.mode === 'light' ? 'grey.200' : 'grey.800'),
+//         }}
+//       >
+//       </Box>
+//       <Container sx={{ my: 10 }}>
+//         <Stack spacing={3} direction={{ xs: 'column', md: 'row' }}>
+//           <Card>
+//             <CardHeader title={props.post.title} sx={{ pb: 3 }} />
+//             <Divider sx={{ borderStyle: 'dashed' }} />
+//             <CardContent>
+//               <Markdown children={content} />
+//             </CardContent>
+//           </Card>
+//         </Stack>
+//       </Container>
+//     </>
+//   );
+// }
