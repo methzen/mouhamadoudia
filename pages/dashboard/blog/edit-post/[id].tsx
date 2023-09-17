@@ -1,4 +1,5 @@
-import React, { ChangeEvent, Component, useState } from "react"
+import { ChangeEvent, Component, useState } from "react"
+'use client'
 import UnprivilegedEditor from "react-quill"
 import Head from "next/head"
 import moment from "moment"
@@ -20,7 +21,7 @@ if (typeof navigator !== "undefined") {
   // require("codemirror/mode/markdown/markdown")
 }
 
-editPost.getInitialProps = async ({req, res, query}: NextPageContext ) =>{
+EditPost.getInitialProps = async ({req, res, query}: NextPageContext ) =>{
   const apiResult = await getBlogPostById(query.id, req)
   if (!apiResult.authSuccess) {
     res?.writeHead(302, { Location: "/login" })
@@ -33,7 +34,7 @@ editPost.getInitialProps = async ({req, res, query}: NextPageContext ) =>{
     notFoundError: apiResult && apiResult.notFoundError
   }
 }
-export default function editPost (props : PostProps):JSX.Element{
+export default function EditPost (props : PostProps):JSX.Element{
   const {
     title,
     urlTitle,

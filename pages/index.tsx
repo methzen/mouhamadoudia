@@ -1,4 +1,3 @@
-import { Component } from "react"
 import { Box, Typography } from "@mui/material"
 import Header from "../components/header"
 import Footer from "../components/footer"
@@ -30,8 +29,10 @@ export default function Home(props: PostbyTag) {
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
+        justifyContent: "center",
         gap: 2,
         textAlign: "center",
+        width: "100%",
       }}
     >
       <Typography
@@ -76,7 +77,6 @@ export default function Home(props: PostbyTag) {
               }
             </div>
           </div>
-
         </div>
         <Footer />
       </div>
