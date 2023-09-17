@@ -1,5 +1,5 @@
 import { Component } from "react"
-
+import { Box, Typography } from "@mui/material"
 import Header from "../components/header"
 import Footer from "../components/footer"
 import HeadMetadata from "../components/headMetadata"
@@ -7,7 +7,6 @@ import getThreeNewestPosts from "../api/getThreeNewestPosts"
 import GoogleAnalytics from "../components/googleAnalytics"
 import { NextPageContext } from "next"
 import { PostbyTag } from "@/types/types"
-import { Typography } from "@mui/material"
 
 Home.getInitialProps = async (cxt: NextPageContext) =>{
   const apiResult = await getThreeNewestPosts()
@@ -17,8 +16,7 @@ Home.getInitialProps = async (cxt: NextPageContext) =>{
   }
 }
 export default function Home(props: PostbyTag) {
-
-    return (
+  return (
       <div className="layout-wrapper">
         <HeadMetadata
           title="Mouhamadou Dia"
@@ -27,31 +25,41 @@ export default function Home(props: PostbyTag) {
         <GoogleAnalytics />
         <Header />
         <div className="homepage-container"> 
-        <Typography variant="h1" sx={{mb : 5}}>
-        I help you build secure api-driven backend.
-        </Typography>
-        <Typography color="text.secondary" variant="h4">
-        Hi, I'm a fullstack software engineer and I work with Python and JavaScript.
-        </Typography>   
- 
-      <div className="used-tech__images">
-      <div className="python">
-          <img src="/python.svg" alt="python logo" />
-        </div>
-        <div className="react">
-          <img src="/react.svg" alt="React logo" />
-        </div>
-        <div className="nodejs">
-          <img src="/nodejs.svg" alt="nodejs logo" />
-        </div>
-      </div>
+        <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: 2,
+        textAlign: "center",
+      }}
+    >
+      <Typography
+        variant="h1"
+        sx={{
+          fontSize: { xs: "3xl", sm: "4xl", md: "5xl" },
+          fontWeight: 800,
+        }}
+      >
+        Hi, I'm Mouhamadou
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: "lg",
+          color: "gray.500",
+          maxWidth: "54ch",
+        }}
+      >
+        I'm a a passionate Fullstack Software Engineer proficient in Python and JavaScript. 
+        I create robust and innovative web solutions to bring ideas to life. Let's build something amazing together!
+      </Typography>
+    </Box>
           <div className="homepage-latest-blog-posts">
             <h2>
               Latest Blog Posts
               <a className="homepage-latest-blog-posts-view-all" href="/blog">View all</a>
             </h2>
             <div className="homepage-latest-blog-posts-list">
-
             {
                 props.posts ?
                 props.posts.map((post, index) => {

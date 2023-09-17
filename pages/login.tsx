@@ -88,50 +88,51 @@ const [loginState, setLoginState] = useState<LoginState>({
           <title>Login | Admin</title>
         </Head>
         <Header />
-
-
           <div className="contact-container">
-              {
-                loginState.credentialError ?
-                <div className="login-form-error-block">
-                  <span>Email address and/or password is incorrect.</span>
-                </div> : null
-              }
-              <div className="login-form-top-header">
-                <span>Admin Login</span>
-              </div>
-              <div className="login-form-field">
-                <input
-                  onChange={updateEmailInputValue}
-                  value={loginState.emailInputValue}
-                  type="email"
-                  autoComplete="new-password"
-                  placeholder="Email Address"
-                  className={loginState.credentialError || loginState.emailRequiredError ? "error" : undefined}
-                />
+            <div className="inputs-container">
+              
                 {
-                  loginState.emailRequiredError ?
-                  <div className="login-form-error-msg">
-                    <span>Email field is required.</span>
+                  loginState.credentialError ?
+                  <div className="login-form-error-block">
+                    <span>Email address and/or password is incorrect.</span>
                   </div> : null
                 }
-              </div>
-              <div className="login-form-field">
-                <input
-                  onChange={updatePasswordInputValue}
-                  value={loginState.passwordInputValue}
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Password"
-                  className={loginState.credentialError || loginState.passwordRequiredError ? "error" : undefined}
-                />
-                {
-                  loginState.passwordRequiredError ?
-                  <div className="login-form-error-msg">
-                    <span>Password field is required.</span>
-                  </div> : null
-                }
-              </div>
+                <div className="login-form-top-header">
+                  <span>Admin Login</span>
+                </div>
+                <div className="login-form-field">
+                  <input
+                    onChange={updateEmailInputValue}
+                    value={loginState.emailInputValue}
+                    type="email"
+                    autoComplete="new-password"
+                    placeholder="Email Address"
+                    className={loginState.credentialError || loginState.emailRequiredError ? "error" : undefined}
+                  />
+                  {
+                    loginState.emailRequiredError ?
+                    <div className="login-form-error-msg">
+                      <span>Email field is required.</span>
+                    </div> : null
+                  }
+                </div>
+                <div className="login-form-field">
+                  <input
+                    onChange={updatePasswordInputValue}
+                    value={loginState.passwordInputValue}
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder="Password"
+                    className={loginState.credentialError || loginState.passwordRequiredError ? "error" : undefined}
+                  />
+                  {
+                    loginState.passwordRequiredError ?
+                    <div className="login-form-error-msg">
+                      <span>Password field is required.</span>
+                    </div> : null
+                  }
+                </div>
+            </div>
               <div className="login-form-submit-btn-container">
                 {
                   !loginState.loading ?
