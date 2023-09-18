@@ -1,4 +1,4 @@
-import { Component } from "react"
+import { useState } from "react"
 import Head from "next/head"
 
 import Header from "../../../components/dashboard/header"
@@ -8,130 +8,135 @@ import authUser from "../../../api/admin-user/auth"
 
 import checkIfImageFilenameExists from "../../../api/images/checkIfImageFilenameExists"
 import uploadImage from "../../../api/images/uploadImage"
+import { NextPageContext } from "next"
 
-export default class extends Component {
-  static async getInitialProps ({req, res}) {
-    const authResult = await authUser(req)
+type UploadState = {
+  selectedFile: File|null,
+  loading: boolean,
+  submitError: boolean,
+  noFileError: boolean,
+  filenameExistsError: boolean,
+  filenameSpacesError: boolean,
+  success: boolean
+}
 
-    if (!authResult.success) {
-      res?.writeHead(302, {Location: "/login"})
-      res?.end()
-    }
+Upload.getInitialProps = async ({req,res}: NextPageContext) => {
+  const authResult = await authUser(req)
 
-    return {}
+  if (!authResult.success) {
+    res?.writeHead(302, {Location: "/login"})
+    res?.end()
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedFile: null,
-      loading: false,
-      submitError: false,
-      noFileError: false,
-      filenameExistsError: false,
-      filenameSpacesError: false,
-      success: false
-    }
+  return {}
+}
+export default function Upload(props:any) {
+
+  const [initialState, setInitialState] = useState<UploadState>({
+    selectedFile: null,
+    loading: false,
+    submitError: false,
+    noFileError: false,
+    filenameExistsError: false,
+    filenameSpacesError: false,
+    success: false
+  })
+
+  const handleInputChange = (event:any) => {
+    setInitialState(state => ({...state, selectedFile: event.target.files[0]}))
   }
 
-  handleInputChange = (event) => {
-    this.setState({selectedFile: event.target.files[0]})
-  }
-
-  uploadImageRequest = (event) => {
+  const uploadImageRequest = (event:any) => {
     event.preventDefault()
   
     let formData = new FormData()
-    formData.append("selectedFile", this.state.selectedFile)
+    const myFile = new File([initialState.selectedFile as unknown as BlobPart], initialState?.selectedFile?.name as string)
+    formData.append("selectedFile", myFile)
   
-    if (!this.state.selectedFile) {
-      this.setState({
+    if (!initialState.selectedFile) {
+      setInitialState(state=>({...state,
         loading: false,
         submitError: false,
         filenameExistsError: false,
         noFileError: true,
         filenameSpacesError: false,
         success: false
-      })
-    } else if (this.state.selectedFile.name.indexOf(" ") !== -1) {
-      this.setState({
+      }))
+    } else if ((initialState.selectedFile).name.indexOf(" ") !== -1) {
+      setInitialState(state =>({...state,
         loading: false,
         submitError: false,
         filenameExistsError: false,
         noFileError: false,
         filenameSpacesError: true,
         success: false
-      })
+      }))
     } else {
-      this.setState({
+      setInitialState(state=>({...state,
         loading: true,
         submitError: false,
         filenameExistsError: false,
         noFileError: false,
         filenameSpacesError: false,
         success: false
-      })
+      }))
   
-      const self = this
-  
-      checkIfImageFilenameExists(this.state.selectedFile.name, function(existsResponse) {
+      checkIfImageFilenameExists(initialState.selectedFile.name, function(existsResponse:any) {
         if (!existsResponse.success) {
-          self.setState({
+          setInitialState(state =>({...state,
             loading: false,
             submitError: false,
             filenameExistsError: true,
             noFileError: false,
             filenameSpacesError: false,
             success: false
-          })
+          }))
         } else {
-          uploadImage(formData, function(apiResponse) {
+          uploadImage(formData, function(apiResponse:any) {
             if (apiResponse.submitError) {
-              self.setState({
+              setInitialState(state=> ({...state,
                 loading: false,
                 submitError: true,
                 filenameExistsError: false,
                 noFileError: false,
                 filenameSpacesError: false,
                 success: false
-              })
+              }))
             } else if (!apiResponse.authSuccess) {
               window.location.href = "/login"
             } else if (apiResponse.noFileError) {
-              self.setState({
+              setInitialState(state=>({...state,
                 loading: false,
                 submitError: false,
                 filenameExistsError: false,
                 noFileError: true,
                 filenameSpacesError: false,
                 success: false
-              })
+              }))
             } else if (!apiResponse.success) {
-              self.setState({
+              setInitialState(state=>({...state,
                 loading: false,
                 submitError: true,
                 filenameExistsError: false,
                 noFileError: false,
                 filenameSpacesError: false,
                 success: false
-              })
+              }))
             } else {
-              self.setState({
+              setInitialState(state=>({...state,
                 loading: false,
                 submitError: false,
                 filenameExistsError: false,
                 noFileError: false,
                 filenameSpacesError: false,
                 success: true
-              })
+              }))
             }
           })
         }
       })
     }
   }
-
-  render () {
     return (
       <div className="db-layout-wrapper">
         <Head>
@@ -145,18 +150,18 @@ export default class extends Component {
               <span>Upload Image</span>
             </div>
             <div className="images-upload-form-container">
-              <form onSubmit={this.uploadImageRequest}>
+              <form onSubmit={uploadImageRequest}>
                 <div className="images-upload-form-label">
                   <span>Choose a file:</span>
                 </div>
                 <input
                   type="file"
                   name="selectedFile"
-                  onChange={this.handleInputChange}
+                  onChange={handleInputChange}
                 />
                 <div className="images-upload-form-submit-btn-container">
                   {
-                    !this.state.loading ?
+                    !initialState.loading ?
                     <button className="images-upload-form-submit-btn" type="submit">Submit</button> :
                     <button className="images-upload-form-submit-btn loading">Loading</button>
                   }
@@ -164,31 +169,31 @@ export default class extends Component {
               </form>
             </div>
             {
-              this.state.success ?
+              initialState.success ?
               <div className="images-upload-success-msg">
                 <span>Success!</span>
               </div> : null
             }
             {
-              this.state.submitError ?
+              initialState.submitError ?
               <div className="images-upload-error-msg">
                 <span>An error occurred.</span>
               </div> : null
             }
             {
-              this.state.filenameExistsError ?
+              initialState.filenameExistsError ?
               <div className="images-upload-error-msg">
                 <span>Filename already exists.</span>
               </div> : null
             }
             {
-              this.state.filenameSpacesError ?
+              initialState.filenameSpacesError ?
               <div className="images-upload-error-msg">
                 <span>Spaces need to be removed from the filename before uploading.</span>
               </div> : null
             }
             {
-              this.state.noFileError ?
+              initialState.noFileError ?
               <div className="images-upload-error-msg">
                 <span>No file was detected.</span>
               </div> : null
@@ -197,5 +202,4 @@ export default class extends Component {
         </div>
       </div>
     )
-  }
 }

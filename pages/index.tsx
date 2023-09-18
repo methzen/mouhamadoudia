@@ -51,7 +51,7 @@ export default function Home(props: PostbyTag) {
           maxWidth: "54ch",
         }}
       >
-        I'm a a passionate Fullstack Software Engineer proficient in Python and JavaScript. 
+        I'm a passionate Fullstack Software Engineer proficient in Python and JavaScript. 
         I create robust and innovative web solutions to bring ideas to life. Let's build something amazing together!
       </Typography>
     </Box>
