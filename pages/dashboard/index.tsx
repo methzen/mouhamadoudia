@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Head from "next/head"
 import moment from "moment"
-
+import Link from 'next/link'
 import Header from "../../components/dashboard/header"
 import Sidebar from "../../components/dashboard/sidebar"
 import { NextPageContext } from "next"
@@ -49,11 +49,11 @@ export default function Dashboard({activePosts, upcomingPosts, getDataError}:any
                 <span>All Blog Posts</span>
               </div>
               <div className="blog-posts-add-new-btn-container">
-                <a href="/dashboard/blog/create-new-post">
+                <Link href="/dashboard/blog/create-new-post">
                   <div className="blog-posts-add-new-btn">
                     <span>+ Add New Post</span>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="blog-posts-list-container">
@@ -102,9 +102,9 @@ export default function Dashboard({activePosts, upcomingPosts, getDataError}:any
                               <span>{moment.unix(post.dateTimestamp).format('MM/DD/YYYY')}</span>
                             </div>
                             <div className="blog-posts-list-items-table-item-data edit">
-                              <a href={`/dashboard/blog/edit-post/${post.id}`}>
+                              <Link href={`/dashboard/blog/edit-post/${post.id}`}>
                                 <span>Edit</span>
-                              </a>
+                              </Link>
                               <span> {">"} </span>
                             </div>
                           </div>
@@ -123,9 +123,9 @@ export default function Dashboard({activePosts, upcomingPosts, getDataError}:any
                               <span>{moment.unix(post.dateTimestamp).format('MM/DD/YYYY')}</span>
                             </div>
                             <div className="blog-posts-list-items-table-item-data edit">
-                              <a href={`/dashboard/blog/edit-post/${post.id}`}>
+                              <Link href={`/dashboard/blog/edit-post/${post.id}`}>
                                 <span>Edit</span>
-                              </a>
+                              </Link>
                               <span> {">"}</span>
                             </div>
                           </div>

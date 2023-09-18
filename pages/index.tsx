@@ -6,7 +6,7 @@ import getThreeNewestPosts from "../api/getThreeNewestPosts"
 import GoogleAnalytics from "../components/googleAnalytics"
 import { NextPageContext } from "next"
 import { PostbyTag } from "@/types/types"
-
+import Link from 'next/link'
 Home.getInitialProps = async (cxt: NextPageContext) =>{
   const apiResult = await getThreeNewestPosts()
   
@@ -58,20 +58,20 @@ export default function Home(props: PostbyTag) {
           <div className="homepage-latest-blog-posts">
             <h2>
               Latest Blog Posts
-              <a className="homepage-latest-blog-posts-view-all" href="/blog">View all</a>
+              <Link className="homepage-latest-blog-posts-view-all" href="/blog">View all</Link>
             </h2>
             <div className="homepage-latest-blog-posts-list">
             {
                 props.posts ?
                 props.posts.map((post, index) => {
                   return (
-                    <a key={index} href={`/blog/${post.urlTitle}`}>
+                    <Link key={index} href={`/blog/${post.urlTitle}`}>
                       <div className="homepage-latest-blog-post">
                         <div className="homepage-latest-blog-post-title">
                           <h3>{post.title}</h3>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   )
                 }) : null
               }
