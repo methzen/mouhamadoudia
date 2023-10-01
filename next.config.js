@@ -4,9 +4,9 @@ const nextConfig = {
     trailingSlash: true,
     env: {
       // HOST
-      "HOST_API_KEY": "http://159.203.125.20:9000",
+      "HOST_API_KEY": "https://www.api.mouhamadoudia.me",
       "DEV_API_URL" : "http://localhost:9000",
-      "PRODUCTION_API_URL": "http://159.203.125.20:9000",
+      "PRODUCTION_API_URL": "https://www.api.mouhamadoudia.me",
       "GOOGLE_VERIFICATION_ID": "-",
       "BING_VERIFICATION_ID": "",
       "GOOGLE_ANALYTICS_ID" : ""
